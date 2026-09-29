@@ -28,7 +28,7 @@ jobs:
           changed=$(git diff --name-only --diff-filter=AM "origin/$BASE...HEAD")
           # any .py the PR adds outside the tooling counts as a mission (GitHub's editor can drop the folder)
           files=$(echo "$changed" | grep -E '\.py$' \
-                  | grep -v -E '^(sim|lab|docs|examples|course|\.github)/' | grep -v -E '(^|/)_[^/]*\.py$' \
+                  | grep -v -E '^(sim|lab|docs|examples|course|\.github)/' | grep -v -E '(^_|/_)[^/]*\.py$' \
                   | grep -v -x -E '(fly|review_prs)\.py' || true)
           others=$(git diff --name-only "origin/$BASE...HEAD" | grep -v -x -F "$files" | grep -v -E '^(missions|training)/' || true)
           if [ -n "$others" ]; then
