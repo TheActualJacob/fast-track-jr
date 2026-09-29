@@ -43,20 +43,31 @@
   </header>
 
   <main>
-    <section class="left">
+    <button id="codeRail" class="rail" title="Show the code (Ctrl/⌘ + B)" hidden>
+      <svg viewBox="0 0 24 24"><path d="M8.6 16.6 13.2 12 8.6 7.4 10 6l6 6-6 6z"/></svg><span>Code</span>
+    </button>
+    <section class="left" id="leftPane">
       <div class="pane-head">
         <span class="file" id="fileLabel">mission.py</span>
         <span class="hint"><kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Enter</kbd> to fly</span>
         <button id="reset" class="link" title="Throw away your code and start from the template">Reset</button>
+        <button id="collapseCode" class="icon-btn" title="Collapse the code (Ctrl/⌘ + B)">
+          <svg viewBox="0 0 24 24"><path d="M15.4 7.4 14 6l-6 6 6 6 1.4-1.4L10.8 12z"/></svg>
+        </button>
       </div>
       <div id="editor"></div>
-      <div class="pane-head sub">
+      <div class="hsplit" id="hsplit" title="Drag to resize · double-click to reset"></div>
+      <div class="pane-head sub" id="resultHead">
+        <button id="toggleResult" class="icon-btn" title="Collapse / expand the result">
+          <svg viewBox="0 0 24 24"><path d="M7.4 8.6 12 13.2l4.6-4.6L18 10l-6 6-6-6z"/></svg>
+        </button>
         <span>Result</span>
         <span id="status" class="status busy">Loading Python…</span>
       </div>
       <div id="output"><p class="muted">Write your mission above, then press <b>Fly</b>. The replay plays on the right, and the line
         that's running lights up in your code.</p></div>
     </section>
+    <div class="vsplit" id="vsplit" title="Drag to resize · double-click to reset"></div>
     <section class="right">
       <iframe id="viewer" title="3D flight replay"></iframe>
     </section>

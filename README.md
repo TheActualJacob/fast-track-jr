@@ -50,6 +50,7 @@ Everything happens in your browser. There's nothing to install, and it works on 
 2. Write your code where the `TODO`s are. Use the map above and the [cheat sheet](docs/cheatsheet.md).
 3. Press **Fly** (or Ctrl/⌘ + Enter). Your drone flies the course in 3D next to your code, and the line that's running
    lights up. Crashes and bugs point to the exact line. Fly as often as you like; your code is saved automatically.
+   Drag the divider to give the code or the replay more room, or collapse either side.
 4. When you're happy, click **Submit**:
    - **Open a pull request** if you have a GitHub account. GitHub opens with your file already filled in: click
      **Commit changes → Propose changes → Create pull request**.

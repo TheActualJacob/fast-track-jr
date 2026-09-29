@@ -32,11 +32,13 @@
   <aside id="left" class="panel">
     <div class="panel-head">
       <span>Code</span><span class="file mono" id="fileName"></span>
-      <button class="icon" id="hideLeft" title="Hide code (C)">×</button>
+      <button class="icon" id="hideLeft" title="Collapse code (C)"><svg viewBox="0 0 24 24"><path d="M15.4 7.4 14 6l-6 6 6 6 1.4-1.4L10.8 12z"/></svg></button>
     </div>
     <div id="code" class="mono"></div>
     <div class="panel-head sub-head"><span>Console</span><span class="hint">print() output</span></div>
     <div id="console" class="mono"></div>
+    <div class="resizer" data-panel="left" title="Drag to resize · double-click to reset"></div>
+    <button class="edge-tab" data-panel="left" title="Collapse / expand the code (C)"><svg viewBox="0 0 24 24"><path d="M15.4 7.4 14 6l-6 6 6 6 1.4-1.4L10.8 12z"/></svg><span>Code</span></button>
   </aside>
 
   <aside id="right" class="panel">
@@ -61,6 +63,8 @@
       <p class="explore-note">Hover the floor to read coordinates. The drone starts at (0, 0) facing
         <b>forward</b> toward the red arch. Takeoff height is about <b>80 cm</b>.</p>
     </section>
+    <div class="resizer" data-panel="right" title="Drag to resize · double-click to reset"></div>
+    <button class="edge-tab" data-panel="right" title="Collapse / expand the scores (S)"><svg viewBox="0 0 24 24"><path d="M15.4 7.4 14 6l-6 6 6 6 1.4-1.4L10.8 12z"/></svg><span>Scores</span></button>
   </aside>
 
   <div id="toasts"></div>

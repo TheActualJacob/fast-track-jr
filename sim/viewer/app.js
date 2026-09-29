@@ -13,6 +13,11 @@ const store = {
   get(k) { try { return JSON.parse(sessionStorage.getItem(k)); } catch { return null; } },
   set(k, v) { try { sessionStorage.setItem(k, JSON.stringify(v)); } catch { /* private mode */ } },
 };
+// layout preferences survive closing the tab
+const prefs = {
+  get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* private mode */ } },
+};
 
 // ------------------------------------------------------------------ data
 // everything is fetched relative to the site root, so this also works from a sub-folder (GitHub Pages)
@@ -1115,7 +1120,7 @@ function renderExplore() {
   $('exploreWrap').hidden = false;
   $('cardWrap').hidden = true;
   $('feedWrap').hidden = true;
-  document.body.classList.add('no-code');
+  document.body.classList.add('explore');
   $('pilotMeta').textContent = EMBED ? 'Press Fly to watch your mission here' : 'No flight loaded · python fly.py missions/<you>.py';
   $('clock').textContent = '3:00.0';
   for (const id of ['play', 'restart', 'speeds', 'togCode']) $(id).hidden = true;
@@ -1161,10 +1166,52 @@ function setSound(on) {
   state.sound = on; $('togSound').classList.toggle('on', on);
   $('soundIcon').setAttribute('d', on ? 'M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z' : 'M4 9v6h4l5 4V5L8 9H4zm15.6 3 2.1-2.1-1.4-1.4-2.1 2.1-2.1-2.1-1.4 1.4 2.1 2.1-2.1 2.1 1.4 1.4 2.1-2.1 2.1 2.1 1.4-1.4z');
 }
-function setCodePanel(on) { document.body.classList.toggle('no-code', !on); $('togCode').classList.toggle('on', on); }
+// ---- side panels: collapse to a drawer tab, drag the inner edge to resize (both remembered)
+const panelKey = (k) => `ftj.${EMBED ? 'embed.' : ''}${k}`;
+function setPanel(side, open) {
+  $(side).classList.toggle('collapsed', !open);
+  if (side === 'left') $('togCode').classList.toggle('on', open);
+  prefs.set(panelKey(`open.${side}`), open);
+}
+const panelOpen = (side) => !$(side).classList.contains('collapsed');
+function setCodePanel(on) { setPanel('left', on); }
+for (const tab of document.querySelectorAll('.edge-tab')) {
+  tab.addEventListener('click', () => setPanel(tab.dataset.panel, !panelOpen(tab.dataset.panel)));
+}
+for (const rz of document.querySelectorAll('.resizer')) {
+  const side = rz.dataset.panel;
+  const panel = $(side);
+  rz.addEventListener('pointerdown', (e) => {
+    e.preventDefault();
+    rz.setPointerCapture(e.pointerId);
+    rz.classList.add('drag');
+    document.body.classList.add('resizing');
+    const r = panel.getBoundingClientRect();
+    const move = (ev) => {
+      const w = side === 'left' ? ev.clientX - r.left : r.right - ev.clientX;
+      const max = Math.max(260, Math.min(760, innerWidth * 0.5));
+      panel.style.width = `${Math.round(Math.max(220, Math.min(max, w)))}px`;
+    };
+    const up = () => {
+      rz.removeEventListener('pointermove', move);
+      rz.classList.remove('drag');
+      document.body.classList.remove('resizing');
+      prefs.set(panelKey(`w.${side}`), parseInt(panel.style.width, 10));
+    };
+    rz.addEventListener('pointermove', move);
+    rz.addEventListener('pointerup', up, { once: true });
+    rz.addEventListener('pointercancel', up, { once: true });
+  });
+  rz.addEventListener('dblclick', () => { panel.style.width = ''; prefs.set(panelKey(`w.${side}`), null); });
+}
+for (const side of ['left', 'right']) {
+  const w = prefs.get(panelKey(`w.${side}`));
+  if (w) $(side).style.width = `${w}px`;
+  if (prefs.get(panelKey(`open.${side}`)) === false) setPanel(side, false);
+}
 $('togLabels').addEventListener('click', () => setLabels(!state.labels));
 $('togSound').addEventListener('click', () => setSound(!state.sound));
-$('togCode').addEventListener('click', () => setCodePanel(document.body.classList.contains('no-code')));
+$('togCode').addEventListener('click', () => setPanel('left', !panelOpen('left')));
 $('hideLeft').addEventListener('click', () => setCodePanel(false));
 
 addEventListener('keydown', (e) => {
@@ -1177,7 +1224,8 @@ addEventListener('keydown', (e) => {
   else if (k >= '1' && k <= '4') setCam(['broadcast', 'chase', 'top', 'fpv'][+k - 1]);
   else if (k === 'l' || k === 'L') setLabels(!state.labels);
   else if (k === 'm' || k === 'M') setSound(!state.sound);
-  else if (k === 'c' || k === 'C') setCodePanel(document.body.classList.contains('no-code'));
+  else if (k === 'c' || k === 'C') setPanel('left', !panelOpen('left'));
+  else if (k === 's' || k === 'S') setPanel('right', !panelOpen('right'));
   else if (k === '+' || k === '=') setSpeed(Math.min(4, state.speed * 2));
   else if (k === '-') setSpeed(Math.max(0.5, state.speed / 2));
   else if ((k === 'n' || k === 'p') && runs.length > 1) {

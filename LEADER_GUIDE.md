@@ -105,11 +105,12 @@ In the replay:
 | `N` / `P` | next / previous pilot (or click the leaderboard) |
 | `1` `2` `3` `4` | broadcast · chase · top · drone camera |
 | `←` `→` | seek 2 s (hold Shift for 10 s) |
-| `C` | hide/show the code panel |
+| `C` / `S` | collapse/expand the code panel / the scores bar (or click the tab on the panel's edge) |
 | `L` / `M` | labels / sound |
 | `F` | fullscreen |
 
 - **Race all** (the checkbox above the leaderboard) shows every drone at once. Untick it to watch one.
+- Drag a side panel's inner edge to resize it (double-click to reset). Sizes and collapsed panels are remembered.
 - The code panel highlights the line that's running. Lines that scored get a green `+10` chip, and the line
   that crashed gets 💥. That's the best moment to teach from.
 - `print()` output shows up in the console panel at the moment it happened.

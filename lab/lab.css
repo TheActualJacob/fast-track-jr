@@ -53,9 +53,36 @@ input.bad { border-color: var(--red); }
 .menu-pop span { color: var(--dim); font-size: 12px; }
 
 /* ---------- layout ---------- */
-main { display: grid; grid-template-columns: minmax(360px, 40%) 1fr; height: calc(100vh - 58px); }
-.left { display: flex; flex-direction: column; min-width: 0; border-right: 1px solid var(--line); background: var(--panel-2); }
-.right { min-width: 0; position: relative; }
+main { display: flex; height: calc(100vh - 58px); }
+.left { display: flex; flex-direction: column; min-width: 0; width: var(--code-w, 40%); flex: none; background: var(--panel-2); }
+.right { min-width: 0; flex: 1 1 auto; position: relative; }
+body.code-collapsed .left, body.code-collapsed .vsplit { display: none; }
+
+/* drag handles */
+.vsplit { flex: none; width: 7px; margin: 0 -3px; z-index: 5; cursor: col-resize; position: relative; touch-action: none; }
+.vsplit::after { content: ""; position: absolute; top: 0; bottom: 0; left: 3px; width: 1px; background: var(--line-2); transition: background 0.15s, width 0.15s, left 0.15s; }
+.vsplit:hover::after, .vsplit.drag::after { background: var(--accent); width: 3px; left: 2px; }
+.hsplit { flex: none; height: 7px; margin: -3px 0; z-index: 5; cursor: row-resize; position: relative; touch-action: none; }
+.hsplit::after { content: ""; position: absolute; left: 0; right: 0; top: 3px; height: 1px; background: transparent; transition: background 0.15s, height 0.15s, top 0.15s; }
+.hsplit:hover::after, .hsplit.drag::after { background: var(--accent); height: 3px; top: 2px; }
+body.dragging, body.dragging * { user-select: none; }
+body.dragging-x, body.dragging-x * { cursor: col-resize !important; }
+body.dragging-y, body.dragging-y * { cursor: row-resize !important; }
+body.dragging iframe { pointer-events: none; }   /* keep the drag alive over the replay */
+
+/* collapsed code: a slim rail to bring it back */
+.rail { flex: none; width: 34px; border: 0; border-right: 1px solid var(--line); background: #0d1016; color: var(--dim); cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 10px; padding-top: 12px; }
+.rail:hover { color: var(--text); background: #11151c; }
+.rail svg { width: 18px; height: 18px; fill: currentColor; }
+.rail span { writing-mode: vertical-rl; font-size: 10.5px; font-weight: 650; letter-spacing: 0.14em; text-transform: uppercase; }
+.icon-btn { flex: none; width: 24px; height: 24px; display: grid; place-items: center; border: 0; border-radius: 5px; background: transparent;
+  color: var(--dim); cursor: pointer; padding: 0; }
+.icon-btn:hover { color: var(--text); background: rgba(255, 255, 255, 0.06); }
+.icon-btn svg { width: 18px; height: 18px; fill: currentColor; transition: transform 0.2s; }
+#resultHead { cursor: default; }
+body.result-collapsed #output, body.result-collapsed .hsplit { display: none; }
+body.result-collapsed #toggleResult svg { transform: rotate(-90deg); }
 #viewer { width: 100%; height: 100%; border: 0; display: block; background: var(--bg); }
 .pane-head { display: flex; align-items: center; gap: 10px; padding: 8px 12px; font-size: 10.5px; font-weight: 650; letter-spacing: 0.12em;
   text-transform: uppercase; color: var(--dim); border-bottom: 1px solid var(--line); background: #0d1016; }
@@ -72,8 +99,8 @@ main { display: grid; grid-template-columns: minmax(360px, 40%) 1fr; height: cal
 .status.bad::before { background: var(--red); }
 @keyframes pulse { 50% { opacity: 0.3; } }
 
-#editor { flex: 1 1 60%; min-height: 0; position: relative; }
-#output { flex: 0 0 34%; min-height: 120px; overflow: auto; padding: 12px 14px; font-size: 13px; }
+#editor { flex: 1 1 auto; min-height: 80px; position: relative; }
+#output { flex: none; height: var(--out-h, 34%); min-height: 60px; overflow: auto; padding: 12px 14px; font-size: 13px; }
 .muted { color: var(--dim); margin: 0; }
 
 /* result */
@@ -139,7 +166,9 @@ main { display: grid; grid-template-columns: minmax(360px, 40%) 1fr; height: cal
 @media (max-width: 900px) {
   .bar { height: auto; flex-wrap: wrap; padding: 8px 12px; gap: 10px; }
   .brand { width: 100%; }
-  main { grid-template-columns: 1fr; height: auto; }
-  .left { height: 70vh; border-right: 0; }
-  .right { height: 75vh; }
+  main { flex-direction: column; height: auto; }
+  .left { width: 100% !important; height: 70vh; }
+  .right { height: 75vh; flex: none; }
+  .vsplit, .rail, #collapseCode { display: none !important; }
+  body.code-collapsed .left { display: flex; }
 }

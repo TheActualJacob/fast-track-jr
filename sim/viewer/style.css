@@ -65,7 +65,8 @@ button { font: inherit; color: inherit; }
   position: fixed; top: 74px; bottom: 84px; z-index: 4; width: 330px;
   background: var(--panel); border: 1px solid var(--line); border-radius: var(--r);
   backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-  display: flex; flex-direction: column; overflow: hidden;
+  display: flex; flex-direction: column; overflow: visible;
+  transition: transform 0.28s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 #left { left: 14px; width: 380px; }
 #right { right: 14px; }
@@ -77,7 +78,34 @@ button { font: inherit; color: inherit; }
 #feedWrap { flex: 1 1 auto; min-height: 70px; border-top: 1px solid var(--line); }
 #feed { overflow-y: auto; min-height: 0; flex: 1 1 auto; }
 #exploreWrap { flex: 1 1 auto; overflow-y: auto; }
-body.no-code #left { display: none; }
+body.explore #left { display: none; }
+
+/* collapsible + resizable side panels */
+#left.collapsed { transform: translateX(calc(-100% - 14px)); }
+#right.collapsed { transform: translateX(calc(100% + 14px)); }
+.panel.collapsed > :not(.edge-tab) { visibility: hidden; }
+.edge-tab { position: absolute; top: 50%; z-index: 3; width: 18px; height: 60px; margin-top: -30px; padding: 0; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  background: rgba(15, 18, 24, 0.94); border: 1px solid var(--line-2); color: var(--dim); transition: height 0.2s, color 0.15s; }
+.edge-tab:hover { color: var(--text); }
+.edge-tab svg { width: 16px; height: 16px; fill: currentColor; flex: none; transition: transform 0.25s; }
+.edge-tab span { display: none; writing-mode: vertical-rl; font-size: 10px; font-weight: 650; letter-spacing: 0.14em; text-transform: uppercase; }
+#left .edge-tab { right: -19px; border-left: 0; border-radius: 0 7px 7px 0; }
+#right .edge-tab { left: -19px; border-right: 0; border-radius: 7px 0 0 7px; }
+#right .edge-tab svg { transform: rotate(180deg); }
+#left.collapsed .edge-tab svg { transform: rotate(180deg); }
+#right.collapsed .edge-tab svg { transform: none; }
+.panel.collapsed .edge-tab { height: 104px; margin-top: -52px; color: var(--text); }
+.panel.collapsed .edge-tab span { display: block; }
+#left.collapsed .edge-tab span { transform: rotate(180deg); }
+.resizer { position: absolute; top: 14px; bottom: 14px; width: 12px; z-index: 2; cursor: col-resize; touch-action: none; }
+#left .resizer { right: -7px; }
+#right .resizer { left: -7px; }
+.resizer::after { content: ""; position: absolute; top: 0; bottom: 0; left: 5px; width: 2px; border-radius: 1px; background: transparent; transition: background 0.15s; }
+.resizer:hover::after, .resizer.drag::after { background: rgba(255, 209, 102, 0.6); }
+.panel.collapsed .resizer { display: none; }
+body.resizing, body.resizing * { cursor: col-resize !important; user-select: none; }
+body.resizing .panel { transition: none; }
 .panel-head { display: flex; align-items: center; gap: 8px; padding: 11px 14px 7px; font-size: 10.5px; font-weight: 650;
   letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); }
 .panel-head .hint, .panel-head .file { margin-left: auto; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--faint); font-size: 11.5px; }

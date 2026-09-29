@@ -150,6 +150,7 @@ function creditLine(log, ev, helpers) {
 
 function finish(log) {
   clearTimeout(flying); flying = null;
+  if (document.body.classList.contains('result-collapsed')) setResultOpen(true);
   flyBtn.disabled = false;
   lastLog = log;
   setStatus(`Flown · ${log.result.score} points`, 'ok');
@@ -318,6 +319,73 @@ menu.addEventListener('click', async (e) => {
   }
   menu.hidden = true;
 });
+
+// ------------------------------------------------------------------ layout: resize + collapse (remembered)
+const root = document.documentElement;
+function refreshEditor() { requestAnimationFrame(() => editor.refresh()); }
+
+function dragHandle(handle, axis, onMove, onEnd) {
+  handle.addEventListener('pointerdown', (e) => {
+    e.preventDefault();
+    handle.setPointerCapture(e.pointerId);
+    handle.classList.add('drag');
+    document.body.classList.add('dragging', axis === 'x' ? 'dragging-x' : 'dragging-y');
+    const move = (ev) => onMove(ev);
+    const up = () => {
+      handle.removeEventListener('pointermove', move);
+      handle.classList.remove('drag');
+      document.body.classList.remove('dragging', 'dragging-x', 'dragging-y');
+      onEnd();
+      refreshEditor();
+    };
+    handle.addEventListener('pointermove', move);
+    handle.addEventListener('pointerup', up, { once: true });
+    handle.addEventListener('pointercancel', up, { once: true });
+  });
+}
+
+// code | replay divider
+dragHandle($('vsplit'), 'x', (ev) => {
+  const w = Math.max(300, Math.min(innerWidth - 380, ev.clientX));
+  root.style.setProperty('--code-w', `${Math.round(w)}px`);
+}, () => store.set('lab.codeW', root.style.getPropertyValue('--code-w')));
+$('vsplit').addEventListener('dblclick', () => { root.style.removeProperty('--code-w'); store.set('lab.codeW', ''); refreshEditor(); });
+
+// editor / result divider
+dragHandle($('hsplit'), 'y', (ev) => {
+  const pane = $('leftPane').getBoundingClientRect();
+  const h = Math.max(60, Math.min(pane.height - 160, pane.bottom - ev.clientY - 34));
+  root.style.setProperty('--out-h', `${Math.round(h)}px`);
+}, () => store.set('lab.outH', root.style.getPropertyValue('--out-h')));
+$('hsplit').addEventListener('dblclick', () => { root.style.removeProperty('--out-h'); store.set('lab.outH', ''); refreshEditor(); });
+
+function setCodeOpen(open) {
+  document.body.classList.toggle('code-collapsed', !open);
+  $('codeRail').hidden = open;
+  store.set('lab.codeOpen', open ? '1' : '0');
+  if (open) refreshEditor();
+}
+function setResultOpen(open) {
+  document.body.classList.toggle('result-collapsed', !open);
+  store.set('lab.resultOpen', open ? '1' : '0');
+  refreshEditor();
+}
+$('collapseCode').addEventListener('click', () => setCodeOpen(false));
+$('codeRail').addEventListener('click', () => setCodeOpen(true));
+$('toggleResult').addEventListener('click', () => setResultOpen(document.body.classList.contains('result-collapsed')));
+$('resultHead').addEventListener('dblclick', () => setResultOpen(document.body.classList.contains('result-collapsed')));
+addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && (e.key === 'b' || e.key === 'B')) {
+    e.preventDefault();
+    setCodeOpen(document.body.classList.contains('code-collapsed'));
+  }
+});
+addEventListener('resize', refreshEditor);
+
+if (store.get('lab.codeW')) root.style.setProperty('--code-w', store.get('lab.codeW'));
+if (store.get('lab.outH')) root.style.setProperty('--out-h', store.get('lab.outH'));
+if (store.get('lab.codeOpen') === '0') setCodeOpen(false);
+if (store.get('lab.resultOpen') === '0') setResultOpen(false);
 
 // ------------------------------------------------------------------ start up
 (async () => {
