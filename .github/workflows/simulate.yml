@@ -1,0 +1,42 @@
+name: Fly mission in simulator
+
+on:
+  pull_request:
+    paths:
+      - "missions/**.py"
+
+permissions:
+  contents: read
+
+jobs:
+  fly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check the PR only touches missions/
+        env:
+          BASE: ${{ github.base_ref }}
+        run: |
+          others=$(git diff --name-only "origin/$BASE...HEAD" | grep -v '^missions/' || true)
+          if [ -n "$others" ]; then
+            echo "::warning title=Extra files::This PR changes files outside missions/ — only your mission file should change: $(echo $others | tr '\n' ' ')"
+          fi
+
+      - name: Fly the changed missions
+        env:
+          BASE: ${{ github.base_ref }}
+        run: |
+          files=$(git diff --name-only --diff-filter=AM "origin/$BASE...HEAD" -- 'missions/*.py' | grep -v '^missions/_' || true)
+          if [ -z "$files" ]; then
+            echo "No mission files changed." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          python fly.py --ci $files

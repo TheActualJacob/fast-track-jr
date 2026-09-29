@@ -1,0 +1,10 @@
+# flight logs from fly.py / review_prs.py
+runs/
+# reference solutions + bug demos stay on the leader's laptop
+leader/
+__pycache__/
+*.pyc
+.DS_Store
+.claude/
+# built by docs/guide/build_guide.py
+docs/guide/guide.html

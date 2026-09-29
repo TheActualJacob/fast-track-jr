@@ -1,0 +1,392 @@
+{
+  "id": "fast-track-2027",
+  "name": "Mission 2027: Fast Track (official solo field)",
+  "description": "The official ADC Mission 2027 'Fast Track' solo autonomous field, laid out from the REC Foundation's Game Element Assembly & Field Setup Instructions v1.0 (08/11/2026).",
+  "units": "cm",
+  "frame": "x = forward along the long mat section (toward the red arch), y = left, z = up. (0, 0) is the drone's start spot, 6 in onto the mat, facing +x.",
+  "notes": [
+    "Positions/heights from the setup PDF: red arch 2' from the start end; landing pad edge on the red arch's tension wire; green keyhole pole 6' from the start end, 2' in from the mat edge, ring bottom 42\"; large cube 8' from the start end (near edge); spiral pole 2' from both outside edges of the corner, brackets at 24\"/34\"/44\"; blue arch 7' from the far end of the short section; yellow keyhole pole 3' from that end, 2' in from the edge, ring bottom 19\"; tunnel bottom 29\" on the yellow pole via a 4\" pipe; small cube under the tunnel, 12\" from the end.",
+    "Estimated (not stated in the PDF): mini keyhole ring size (22\" outer / 18\" inner), large-cube hole size, which mat edge the green pole's 2' is measured from, and the yellow keyhole's fly-through direction (modelled as heading +x / north, across the short section). Flip 'facing' if your referee reads the figures differently.",
+    "Every element may be off by up to +/- 3 in at a real event (manual 1.5)."
+  ],
+  "time_limit_s": 180,
+  "takeoff_height": 80,
+  "start": {
+    "x": 0,
+    "y": 0,
+    "yaw": 0
+  },
+  "flight_zone": {
+    "x": [
+      -110,
+      560
+    ],
+    "y": [
+      -390,
+      115
+    ],
+    "z_max": 300
+  },
+  "mats": [
+    {
+      "x": [
+        -15.24,
+        228.6
+      ],
+      "y": [
+        -53.34,
+        53.34
+      ]
+    },
+    {
+      "x": [
+        228.6,
+        472.44
+      ],
+      "y": [
+        -53.34,
+        53.34
+      ]
+    },
+    {
+      "x": [
+        365.76,
+        472.44
+      ],
+      "y": [
+        -297.18,
+        -53.34
+      ]
+    }
+  ],
+  "start_zone": {
+    "x": [
+      -15.24,
+      15.24
+    ],
+    "y": [
+      -53.34,
+      53.34
+    ]
+  },
+  "pilot_station": {
+    "x": [
+      -15.24,
+      472.44
+    ],
+    "y": [
+      121.92,
+      213.36
+    ]
+  },
+  "elements": [
+    {
+      "id": "red_arch",
+      "type": "arch",
+      "label": "Red arch",
+      "color": "#d6204e",
+      "center": [
+        45.72,
+        0
+      ],
+      "facing": [
+        1,
+        0
+      ],
+      "inner_w": 152.4,
+      "inner_h": 160.02,
+      "outer_w": 259.08,
+      "outer_h": 187.96,
+      "hint": "2 ft from the start end of the mat (46 cm ahead of the start spot). Fly under it going forward."
+    },
+    {
+      "id": "landing_pad",
+      "type": "landing_pad",
+      "label": "Landing pad",
+      "color": "#d6204e",
+      "center": [
+        83.82,
+        0
+      ],
+      "diameter": 76.2,
+      "bullseye_d": 25.4,
+      "hint": "Right behind the red arch: its edge touches the arch's tension wire. Center 84 cm ahead of the start."
+    },
+    {
+      "id": "green_keyhole",
+      "type": "keyhole",
+      "label": "Green keyhole",
+      "color": "#3fbf3f",
+      "center": [
+        167.64,
+        7.62,
+        144.78
+      ],
+      "facing": [
+        1,
+        0
+      ],
+      "inner_d": 60.96,
+      "outer_d": 76.2,
+      "hint": "Pole 6 ft from the start end. Ring bottom 42 in (107 cm), center about 145 cm high. Fly through going forward."
+    },
+    {
+      "id": "large_cube",
+      "type": "cube",
+      "label": "Large cube",
+      "color": "#d6204e",
+      "center": [
+        250.19,
+        0
+      ],
+      "size": 43.18,
+      "height": 50.8,
+      "hole_d": 30,
+      "hint": "Near edge 8 ft from the start end. In one side, out a different side (25 pts)."
+    },
+    {
+      "id": "mini_keyhole_1",
+      "type": "keyhole",
+      "label": "Mini keyhole 1",
+      "color": "#1b1e23",
+      "accent": "#35d06b",
+      "center": [
+        411.48,
+        -39.37,
+        63.5
+      ],
+      "facing": [
+        1,
+        0
+      ],
+      "inner_d": 45.72,
+      "outer_d": 55.88,
+      "pole": [
+        411.48,
+        -7.62
+      ],
+      "pole_top": 116.84,
+      "hint": "Spiral, lowest ring (bracket at 24 in). East side of the spiral pole. Fly through heading forward (north).",
+      "short": "Mini 1"
+    },
+    {
+      "id": "mini_keyhole_2",
+      "type": "keyhole",
+      "label": "Mini keyhole 2",
+      "color": "#1b1e23",
+      "accent": "#35d06b",
+      "center": [
+        443.23,
+        -7.62,
+        88.9
+      ],
+      "facing": [
+        0,
+        1
+      ],
+      "inner_d": 45.72,
+      "outer_d": 55.88,
+      "pole": [
+        411.48,
+        -7.62
+      ],
+      "pole_top": 116.84,
+      "hint": "Spiral, middle ring (bracket at 34 in). North side of the pole. Fly through heading left (west).",
+      "short": "Mini 2"
+    },
+    {
+      "id": "mini_keyhole_3",
+      "type": "keyhole",
+      "label": "Mini keyhole 3",
+      "color": "#1b1e23",
+      "accent": "#35d06b",
+      "center": [
+        411.48,
+        24.13,
+        114.3
+      ],
+      "facing": [
+        -1,
+        0
+      ],
+      "inner_d": 45.72,
+      "outer_d": 55.88,
+      "pole": [
+        411.48,
+        -7.62
+      ],
+      "pole_top": 116.84,
+      "hint": "Spiral, top ring (bracket at 44 in). West side of the pole. Fly through heading back toward the start (south).",
+      "short": "Mini 3"
+    },
+    {
+      "id": "blue_arch",
+      "type": "arch",
+      "label": "Blue arch",
+      "color": "#1e9bd7",
+      "center": [
+        419.1,
+        -83.82
+      ],
+      "facing": [
+        0,
+        -1
+      ],
+      "inner_w": 152.4,
+      "inner_h": 160.02,
+      "outer_w": 259.08,
+      "outer_h": 187.96,
+      "hint": "Over the short mat section, 1 ft in from the corner. Fly under it heading right (east)."
+    },
+    {
+      "id": "yellow_keyhole",
+      "type": "keyhole",
+      "label": "Yellow keyhole",
+      "color": "#f2c200",
+      "center": [
+        411.48,
+        -165.1,
+        86.36
+      ],
+      "facing": [
+        1,
+        0
+      ],
+      "inner_d": 60.96,
+      "outer_d": 76.2,
+      "pole": [
+        411.48,
+        -205.74
+      ],
+      "pole_top": 121.92,
+      "hint": "Hangs off its pole by a T-bracket; ring bottom 19 in (48 cm). Across the short section: fly through heading north."
+    },
+    {
+      "id": "tunnel",
+      "type": "tunnel",
+      "label": "Tunnel",
+      "color": "#2a2d33",
+      "center": [
+        411.48,
+        -251.46
+      ],
+      "bottom": 73.66,
+      "length": 48.26,
+      "diameter": 59.69,
+      "stand_offset": [
+        0,
+        45.72
+      ],
+      "hint": "On the yellow keyhole's pole, bottom 29 in (74 cm), top 122 cm. Drop through top to bottom."
+    },
+    {
+      "id": "small_cube",
+      "type": "cube",
+      "label": "Small cube",
+      "color": "#2f6fe0",
+      "center": [
+        411.48,
+        -251.46
+      ],
+      "size": 30.48,
+      "height": 33.02,
+      "hole_d": 18,
+      "solid_sides": true,
+      "hint": "Right under the tunnel, 12 in from the end of the short section. Land on it for 10 points."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "takeoff",
+      "label": "Take off",
+      "points": 5,
+      "max": 1
+    },
+    {
+      "id": "red_arch",
+      "label": "Fly under the red arch",
+      "points": 5,
+      "max": 2
+    },
+    {
+      "id": "blue_arch",
+      "label": "Fly under the blue arch",
+      "points": 5,
+      "max": 2
+    },
+    {
+      "id": "green_keyhole",
+      "label": "Fly through the green keyhole",
+      "points": 10,
+      "max": 2
+    },
+    {
+      "id": "yellow_keyhole",
+      "label": "Fly through the yellow keyhole",
+      "points": 20,
+      "max": 2
+    },
+    {
+      "id": "large_cube",
+      "label": "Fly through the large cube",
+      "points": 25,
+      "max": 2
+    },
+    {
+      "id": "mini_keyhole_1",
+      "label": "Mini keyhole #1 (lowest)",
+      "points": 15,
+      "max": 2
+    },
+    {
+      "id": "mini_keyhole_2",
+      "label": "Mini keyhole #2 (middle)",
+      "points": 15,
+      "max": 2
+    },
+    {
+      "id": "mini_keyhole_3",
+      "label": "Mini keyhole #3 (top)",
+      "points": 15,
+      "max": 2
+    },
+    {
+      "id": "spiral_bonus",
+      "label": "Spiral bonus (1 \u2192 2 \u2192 3 in a row)",
+      "points": 10,
+      "max": 2,
+      "sequence": [
+        "mini_keyhole_1",
+        "mini_keyhole_2",
+        "mini_keyhole_3"
+      ]
+    },
+    {
+      "id": "tunnel",
+      "label": "Fly through the tunnel (top \u2192 bottom)",
+      "points": 15,
+      "max": 2
+    },
+    {
+      "id": "land_pad",
+      "label": "Land on the landing pad",
+      "points": 5,
+      "max": 1,
+      "group": "landing"
+    },
+    {
+      "id": "land_cube",
+      "label": "Land on a cube",
+      "points": 10,
+      "max": 1,
+      "group": "landing"
+    },
+    {
+      "id": "land_bullseye",
+      "label": "Land on the bullseye",
+      "points": 15,
+      "max": 1,
+      "group": "landing"
+    }
+  ]
+}

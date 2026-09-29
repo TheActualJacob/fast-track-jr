@@ -1,0 +1,70 @@
+{
+  "id": "fast-track-jr",
+  "name": "Fast Track Jr.",
+  "description": "A shrunk-down version of the ADC Mission 2027 'Fast Track' solo autonomous field. Same element sizes and rules style, fewer elements.",
+  "units": "cm",
+  "frame": "x = forward from the start (toward the red arch), y = left, z = up. The drone starts at (0, 0) facing +x.",
+  "time_limit_s": 180,
+  "takeoff_height": 80,
+  "start": { "x": 0, "y": 0, "yaw": 0 },
+  "flight_zone": { "x": [-100, 330], "y": [-380, 130], "z_max": 300 },
+  "mats": [
+    { "x": [-15, 229], "y": [-53.5, 53.5] },
+    { "x": [122, 229], "y": [-297.5, -53.5] }
+  ],
+  "start_zone": { "x": [-15, 15.5], "y": [-53.5, 53.5] },
+  "pilot_station": { "x": [-15, 229], "y": [140, 185] },
+  "elements": [
+    {
+      "id": "red_arch", "type": "arch", "label": "Red arch", "color": "#d6204e",
+      "center": [30, 0], "facing": [1, 0],
+      "inner_w": 152, "inner_h": 160, "outer_w": 259, "outer_h": 188,
+      "hint": "30 cm ahead of the start. Fly under it going forward."
+    },
+    {
+      "id": "green_keyhole", "type": "keyhole", "label": "Green keyhole", "color": "#3fbf3f",
+      "center": [110, 0, 120], "facing": [1, 0],
+      "inner_d": 61, "outer_d": 76,
+      "hint": "110 cm ahead, ring center 120 cm high. The takeoff height (80 cm) is too low!"
+    },
+    {
+      "id": "large_cube", "type": "cube", "label": "Large cube", "color": "#d6204e",
+      "center": [175.5, 0], "size": 43, "height": 51, "hole_d": 30,
+      "hint": "BONUS. Sits on the floor at the corner, 175 cm ahead. Side holes are centered 25 cm high. Enter one side, leave through a different side."
+    },
+    {
+      "id": "blue_arch", "type": "arch", "label": "Blue arch", "color": "#1e9bd7",
+      "center": [175.5, -75], "facing": [0, -1],
+      "inner_w": 152, "inner_h": 160, "outer_w": 259, "outer_h": 188,
+      "hint": "Around the corner: 75 cm to the RIGHT of the corner. Fly under it going right."
+    },
+    {
+      "id": "yellow_keyhole", "type": "keyhole", "label": "Yellow keyhole", "color": "#f2c200",
+      "center": [175.5, -160, 140], "facing": [0, -1],
+      "inner_d": 61, "outer_d": 76,
+      "hint": "160 cm to the right of the corner, ring center 140 cm high."
+    },
+    {
+      "id": "tunnel", "type": "tunnel", "label": "Tunnel", "color": "#2a2d33",
+      "center": [175.5, -250], "bottom": 95, "length": 48, "diameter": 60, "stand_offset": [45, 0],
+      "hint": "BONUS. Hangs right above the landing pad, from 95 cm to 143 cm high. Go UNDER it (safe), or OVER it and drop straight down through it (+15)."
+    },
+    {
+      "id": "landing_pad", "type": "landing_pad", "label": "Landing pad", "color": "#d6204e",
+      "center": [175.5, -250], "diameter": 76, "bullseye_d": 25.4,
+      "hint": "250 cm to the right of the corner. Land in the small center ring for the bullseye."
+    }
+  ],
+  "tasks": [
+    { "id": "takeoff",        "label": "Take off",                       "points": 5,  "max": 1 },
+    { "id": "red_arch",       "label": "Fly under the red arch",         "points": 5,  "max": 2 },
+    { "id": "green_keyhole",  "label": "Fly through the green keyhole",  "points": 10, "max": 2 },
+    { "id": "large_cube",     "label": "Fly through the large cube",     "points": 25, "max": 2, "bonus": true },
+    { "id": "blue_arch",      "label": "Fly under the blue arch",        "points": 5,  "max": 2 },
+    { "id": "yellow_keyhole", "label": "Fly through the yellow keyhole", "points": 20, "max": 2 },
+    { "id": "tunnel",         "label": "Drop through the tunnel",        "points": 15, "max": 2, "bonus": true },
+    { "id": "land_pad",       "label": "Land on the landing pad",        "points": 5,  "max": 1, "group": "landing" },
+    { "id": "land_cube",      "label": "Land on top of the cube",        "points": 10, "max": 1, "group": "landing" },
+    { "id": "land_bullseye",  "label": "Land on the bullseye",           "points": 15, "max": 1, "group": "landing" }
+  ]
+}

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mission Lab · ADC Flight Sim</title>
+  <meta name="description" content="Write a CoDrone EDU Python mission, fly it in a 3D simulator, and submit it.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23ff4d6d' stroke-width='5'/%3E%3Ccircle cx='48' cy='16' r='11' fill='none' stroke='%234cc9f0' stroke-width='5'/%3E%3Ccircle cx='16' cy='48' r='11' fill='none' stroke='%2380ed99' stroke-width='5'/%3E%3Ccircle cx='48' cy='48' r='11' fill='none' stroke='%23ffd166' stroke-width='5'/%3E%3Crect x='24' y='24' width='16' height='16' rx='4' fill='%23e8ecf1'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
+  <link rel="stylesheet" href="lab/lab.css">
+</head>
+<body>
+  <header class="bar">
+    <div class="brand">
+      <div class="logo">ADC Flight Sim <b>· Mission Lab</b></div>
+      <div class="sub" id="courseLabel">Fast Track Jr.</div>
+    </div>
+    <label class="fieldsel">
+      <span>Course</span>
+      <select id="field">
+        <option value="jr">Fast Track Jr. (workshop)</option>
+        <option value="real">Official Mission 2027 field</option>
+      </select>
+    </label>
+    <label class="who">
+      <span>GitHub username</span>
+      <input id="name" placeholder="e.g. alexkim" autocomplete="off" spellcheck="false" maxlength="39">
+    </label>
+    <div class="actions">
+      <button id="fly" class="primary" disabled>
+        <svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg><span>Fly</span>
+      </button>
+      <div class="menu">
+        <button id="submitBtn" class="ghost">Submit <svg viewBox="0 0 24 24" class="chev"><path d="M7 10l5 5 5-5z"/></svg></button>
+        <div class="menu-pop" id="submitMenu" hidden>
+          <button data-act="pr"><b>Open a pull request</b><span>Adds your file on GitHub. Needs a free GitHub account.</span></button>
+          <button data-act="link"><b>Copy share link</b><span>Your code packed into a link. Paste it wherever your leader asks.</span></button>
+          <button data-act="download"><b>Download .py</b><span>Save your mission as a file.</span></button>
+        </div>
+      </div>
+      <a class="ghost" id="guide" href="docs/Fast-Track-Jr-Mission-Guide.pdf" target="_blank" rel="noopener">Guide</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="left">
+      <div class="pane-head">
+        <span class="file" id="fileLabel">mission.py</span>
+        <span class="hint"><kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Enter</kbd> to fly</span>
+        <button id="reset" class="link" title="Throw away your code and start from the template">Reset</button>
+      </div>
+      <div id="editor"></div>
+      <div class="pane-head sub">
+        <span>Result</span>
+        <span id="status" class="status busy">Loading Python…</span>
+      </div>
+      <div id="output"><p class="muted">Write your mission above, then press <b>Fly</b>. The replay plays on the right, and the line
+        that's running lights up in your code.</p></div>
+    </section>
+    <section class="right">
+      <iframe id="viewer" title="3D flight replay"></iframe>
+    </section>
+  </main>
+
+  <div id="toast" role="status"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/python/python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/edit/matchbrackets.min.js"></script>
+  <script type="module" src="lab/lab.js"></script>
+</body>
+</html>
