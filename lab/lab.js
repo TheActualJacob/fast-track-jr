@@ -299,10 +299,11 @@ menu.addEventListener('click', async (e) => {
   const name = cleanName();
   if (act === 'pr') {
     if (needName()) return;
-    const folder = FIELDS[field].folder;
-    let url = `https://github.com/${REPO}/new/main/${folder}?filename=${encodeURIComponent(name + '.py')}&value=${encodeURIComponent(code)}`;
+    // folder goes inside the filename: GitHub drops the last URL folder when ?filename= is given
+    const file = `${FIELDS[field].folder}/${name}.py`;
+    let url = `https://github.com/${REPO}/new/main?filename=${encodeURIComponent(file)}&value=${encodeURIComponent(code)}`;
     const copied = await copy(code);
-    if (url.length > 7500) url = `https://github.com/${REPO}/new/main/${folder}?filename=${encodeURIComponent(name + '.py')}`;
+    if (url.length > 7500) url = `https://github.com/${REPO}/new/main?filename=${encodeURIComponent(file)}`;
     window.open(url, '_blank', 'noopener');
     toast(copied ? 'Opened GitHub. Your code is also copied, so if it asks you to fork first, paste it in after.' : 'Opened GitHub.', 6000);
   } else if (act === 'link') {

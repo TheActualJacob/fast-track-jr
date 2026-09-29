@@ -3,7 +3,7 @@ name: Fly mission in simulator
 on:
   pull_request:
     paths:
-      - "missions/**.py"
+      - "**.py"
 
 permissions:
   contents: read
@@ -21,22 +21,23 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Check the PR only touches missions/
-        env:
-          BASE: ${{ github.base_ref }}
-        run: |
-          others=$(git diff --name-only "origin/$BASE...HEAD" | grep -v '^missions/' || true)
-          if [ -n "$others" ]; then
-            echo "::warning title=Extra files::This PR changes files outside missions/ — only your mission file should change: $(echo $others | tr '\n' ' ')"
-          fi
-
       - name: Fly the changed missions
         env:
           BASE: ${{ github.base_ref }}
         run: |
-          files=$(git diff --name-only --diff-filter=AM "origin/$BASE...HEAD" -- 'missions/*.py' | grep -v '^missions/_' || true)
+          changed=$(git diff --name-only --diff-filter=AM "origin/$BASE...HEAD")
+          # any .py the PR adds outside the tooling counts as a mission (GitHub's editor can drop the folder)
+          files=$(echo "$changed" | grep -E '\.py$' \
+                  | grep -v -E '^(sim|lab|docs|examples|course|\.github)/' | grep -v -E '(^|/)_[^/]*\.py$' \
+                  | grep -v -x -E '(fly|review_prs)\.py' || true)
+          others=$(git diff --name-only "origin/$BASE...HEAD" | grep -v -x -F "$files" | grep -v -E '^(missions|training)/' || true)
+          if [ -n "$others" ]; then
+            echo "::warning title=Extra files::This PR changes files that aren't missions. Only your mission file should change: $(echo $others | tr '\n' ' ')"
+          fi
           if [ -z "$files" ]; then
             echo "No mission files changed." >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
-          python fly.py --ci $files
+          field=jr
+          if echo "$files" | grep -q '^training/'; then field=real; fi
+          python fly.py --ci --field "$field" $files

@@ -31,6 +31,7 @@ from sim import sharelink  # noqa: E402
 from sim.runner import RUNS, leaderboard_text, markdown_report, simulate, slug, text_report  # noqa: E402
 
 PR_DIR = os.path.join(RUNS, "prs")
+INFRA = ("sim/", "lab/", "docs/", "examples/", "course/", ".github/")
 ALLOWED_IMPORTS = {"codrone_edu", "codrone_edu.drone", "codrone_edu.protocol", "codrone_edu.system",
                    "time", "math", "random"}
 RISKY_CALLS = {"open", "exec", "eval", "compile", "__import__", "input", "breakpoint", "globals", "setattr",
@@ -111,9 +112,10 @@ def main():
     for pr in sorted(prs, key=lambda p: p["number"]):
         login = (pr.get("author") or {}).get("login") or "someone"
         paths = [f["path"] for f in pr.get("files", [])]
-        missions = [p for p in paths if p.startswith("missions/") and p.endswith(".py")
-                    and not os.path.basename(p).startswith("_")]
-        others = [p for p in paths if not p.startswith("missions/")]
+        # a mission is any .py the PR adds outside the tooling (GitHub's web editor sometimes drops the folder)
+        missions = [p for p in paths if p.endswith(".py") and not p.startswith(INFRA)
+                    and p not in ("fly.py", "review_prs.py") and not os.path.basename(p).startswith("_")]
+        others = [p for p in paths if p not in missions and not p.startswith(("missions/", "training/"))]
         tag = f"#{pr['number']} {login}"
         if others:
             print(f"   ⚠️  {tag} also changes files outside missions/: {', '.join(others[:5])}")
